@@ -97,5 +97,7 @@
     <File Name="sensor.h"/>
     <File Name="racer.h"/>
     <File Name="timestamp.h"/>
+    <File Name="input.txt"/>
+    <File Name="utilities.h"/>
   </VirtualDirectory>
 </CodeLite_Project>
