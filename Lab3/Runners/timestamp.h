@@ -1,15 +1,18 @@
 #ifndef TIMESTAMP_H
 #define TIMESTAMP_H
 
-#include <iostream>
 
 class Timestamp{
 public:
-    Timestamp(Timestamp&);
+    Timestamp();
+    Timestamp(int);
     int time; //in milliseconds
 };
 
-Timestamp::Timestamp(Timestamp& t){
-    this->time = t.time;
+Timestamp::Timestamp(){
+    this->time = 1;
+}
+Timestamp::Timestamp(int t){
+    this->time = t;
 }
 #endif
