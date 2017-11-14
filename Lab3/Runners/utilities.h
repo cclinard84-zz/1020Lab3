@@ -17,30 +17,63 @@ using std::getline;
 using std::string;
 using std::stringstream;
 
-void getStartTime(char tempArray[], int& startTime){
+void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& raceDistance){
     char * charPtr;
-    char delim[2] = ":";
     int i;
     
-    charPtr = strtok(tempArray, delim);
+    //Tokenize this ishte and extract info
+    charPtr = strtok(tempArray, ":");
     string hour(charPtr);
-    charPtr = strtok(tempArray, delim);
+    
+    charPtr = strtok(NULL, ":");
     string minutes(charPtr);
-    charPtr = strtok(tempArray, delim);
+    
+    charPtr = strtok(NULL, ":");
     string seconds(charPtr);
-    charPtr = strtok(tempArray, delim);
+    
+    charPtr = strtok(NULL, ";");
     string milliseconds(charPtr);
     
+    charPtr = strtok(NULL, ";");
+    string sensors(charPtr);
+    
+    charPtr = strtok(NULL, ";");
+    string totalMiles(charPtr);
+   
+    
+    //Convert hours to milliseconds
     stringstream shour(hour);
     shour >> i;
     startTime += 3600000 * i;
+    
+    //Parse and Convert minutes to milliseconds
     stringstream sminute(minutes);
     sminute >> i;
-    std::cout << i << std::endl;
-    startTime += 3600000 ;
+    startTime += 60000 * i;
+    
+    //Parse and Convert seconds to milliseconds
+    stringstream ssecond(seconds);
+    ssecond >> i;
+    startTime += 1000 * i;
+    
+    //Parse and Really?
+    stringstream smsecond(milliseconds);
+    smsecond >> i;
+    
+    //Yep
+    startTime += i;
+    
+    //Parse sensors 
+    stringstream ssensors(sensors);
+    ssensors >> totalSensors;
+    
+    //Parse distance
+    stringstream smiles(totalMiles);
+    smiles >> raceDistance;
+    
 }
 
-void readFile(vector<Racer>& data, int& startTime){
+void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& raceDistance){
     Racer tempRacer;
     bool firstLine = false;
     
@@ -51,8 +84,7 @@ void readFile(vector<Racer>& data, int& startTime){
         char tempArray[256];
         strcpy(tempArray, line.c_str());
         if(firstLine == false){
-            
-            getStartTime(tempArray, startTime);
+            getRaceInfo(tempArray, startTime, totalSensors, raceDistance);
             firstLine = true;
             getline( input, line );
         }
@@ -61,7 +93,10 @@ void readFile(vector<Racer>& data, int& startTime){
             getline( input, line );
         }
     }
+    input.close();
 }
+
+
 
 
 
