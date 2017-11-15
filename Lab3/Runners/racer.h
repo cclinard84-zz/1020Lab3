@@ -1,12 +1,15 @@
 #ifndef racer_h
 #define racer_h
 #include <cstdlib>
+#include <iostream>
 #include <vector>
 #include <string>
 #include "sensor.h"
 
 using std::string;
 using std::vector;
+using std::ostream;
+using std::endl;
 
 class Racer{
 public:
@@ -15,6 +18,7 @@ public:
     
     //Overloaded operator declarations
     friend bool operator<( const Racer&, const Racer& );
+    friend std::ostream& operator<<( ostream&, const Racer&);
     void operator=( Racer& );
     
     //Setters for private data fields
@@ -61,11 +65,17 @@ bool operator<( const Racer& racer1, const Racer& racer2 ) {
     return racer1.totalRaceTime < racer2.totalRaceTime;
 }
 
+ostream& operator<<(ostream& outStream, const Racer& r){
+    outStream << r.racerName << " " << r.racerNumber;
+    return outStream;
+}
+
 void Racer::operator=(Racer& r){
-   r.setRacerNumber(this->getRacerNumber());
-   r.setTotalDistance(this->getTotalRaceDistance());
-   r.setTotalRaceSpeed(this->getTotalRaceSpeed());
-   r.setTotalRaceTime(this->getTotalRaceTime());
-   r.setSensors(this->getSensors());
+    r.setRacerNumber(this->getRacerNumber());
+    r.setTotalDistance(this->getTotalRaceDistance());
+    r.setTotalRaceSpeed(this->getTotalRaceSpeed());
+    r.setTotalRaceTime(this->getTotalRaceTime());
+    r.setSensors(this->getSensors());
+    
 }
 #endif

@@ -16,7 +16,10 @@ int main(int argc, char **argv)
     
     
     readFile(racers, startTime, totalSensors, raceDistance);
-    std::cout << startTime << std::endl;
-    std::cout << totalSensors << std::endl;
-    std::cout << raceDistance << std::endl;
+    for(std::vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it) {
+        std::cout << *it << std::endl;
+    }
+    //std::cout << startTime << std::endl;
+    //std::cout << totalSensors << std::endl;
+    //std::cout << raceDistance << std::endl;
 }

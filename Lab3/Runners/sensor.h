@@ -10,6 +10,7 @@ public:
     int number;
     Timestamp timestamp;
     double mileMarker;
+    void setTimestamp(int time){ this->timestamp.time = time;    }
 };
 
 Sensor::Sensor(){
