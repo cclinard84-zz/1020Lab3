@@ -17,9 +17,11 @@ public:
     Racer(vector<Sensor>, string, int, double, double);
     
     //Overloaded operator declarations
-    friend bool operator<( const Racer&, const Racer& );
     friend std::ostream& operator<<( ostream&, const Racer&);
-    void operator=( Racer& );
+    void operator=( const Racer& );
+    
+    //Comparator
+    bool operator<( Racer& r ) { return this->totalRaceTime < r.totalRaceTime; }
     
     //Setters for private data fields
     void setRacerName(string racerName){ this->racerName = racerName; }
@@ -30,12 +32,12 @@ public:
     void setSensors(vector<Sensor> sensors){ this->sensors = sensors; }
     
     //Getters for private data fields
-    string getRacerName(){ return this->racerName; }
-    int getRacerNumber(){ return this->racerNumber; }
-    int getTotalRaceTime(){ return this->totalRaceTime; }
-    double getTotalRaceDistance(){ return this->totalRaceDistance; }
-    double getTotalRaceSpeed(){ return this->totalRaceSpeed; }
-    vector<Sensor> getSensors(){ return this->sensors; }
+    string getRacerName() const { return this->racerName; }
+    int getRacerNumber() const { return this->racerNumber; }
+    int getTotalRaceTime() const { return this->totalRaceTime; }
+    double getTotalRaceDistance() const { return this->totalRaceDistance; }
+    double getTotalRaceSpeed() const { return this->totalRaceSpeed; }
+    vector<Sensor> getSensors() { return this->sensors; }
 private:
     vector<Sensor> sensors;
     string racerName;
@@ -61,21 +63,17 @@ Racer::Racer(vector<Sensor> sensors, string racerName, int racerNumber, double t
     this->totalRaceSpeed = totalSpeed;
 }
 
-bool operator<( const Racer& racer1, const Racer& racer2 ) {
-    return racer1.totalRaceTime < racer2.totalRaceTime;
-}
-
 ostream& operator<<(ostream& outStream, const Racer& r){
-    outStream << r.racerName << " " << r.racerNumber;
+    outStream << r.racerName << " " << r.racerNumber << " " << r.totalRaceTime;
     return outStream;
 }
 
-void Racer::operator=(Racer& r){
-    r.setRacerNumber(this->getRacerNumber());
-    r.setTotalDistance(this->getTotalRaceDistance());
-    r.setTotalRaceSpeed(this->getTotalRaceSpeed());
-    r.setTotalRaceTime(this->getTotalRaceTime());
-    r.setSensors(this->getSensors());
-    
+void Racer::operator= ( const Racer& r ) {
+    this->racerName = r.racerName;
+    this->racerNumber = r.racerNumber ;
+    this->totalRaceDistance = r.totalRaceDistance;
+    this->totalRaceSpeed = r.totalRaceSpeed;
+    this->totalRaceTime = r.totalRaceTime;
+    this->sensors = r.sensors;
 }
 #endif

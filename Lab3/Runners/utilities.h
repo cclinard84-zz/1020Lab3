@@ -17,6 +17,7 @@ using std::getline;
 using std::string;
 using std::stringstream;
 
+
 void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& raceDistance){
     char * charPtr;
     int i;
@@ -39,7 +40,6 @@ void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& ra
     
     charPtr = strtok(NULL, ";");
     string totalMiles(charPtr);
-   
     
     //Convert hours to milliseconds
     stringstream shour(hour);
@@ -73,45 +73,52 @@ void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& ra
     
 }
 
-void convertTime(char tempArray[], int& time){
+void convertTime(Racer& tempRacer, char tempArray[], int& time){
     char * charPtr;
     int i;
     
     //Tokenize this ishte and extract info
     charPtr = strtok(tempArray, ":");
-    string hour(charPtr);
+    if(charPtr != NULL){
+        string hour(charPtr);
     
-    charPtr = strtok(NULL, ":");
-    string minutes(charPtr);
+        charPtr = strtok(NULL, ":");
+        string minutes(charPtr);
     
-    charPtr = strtok(NULL, ":");
-    string seconds(charPtr);
+        charPtr = strtok(NULL, ":");
+        string seconds(charPtr);
     
-    charPtr = strtok(NULL, ";");
-    string milliseconds(charPtr);
+        charPtr = strtok(NULL, ";");
+        string milliseconds(charPtr);
 
-    //Convert hours to milliseconds
-    stringstream shour(hour);
-    shour >> i;
-    time += 3600000 * i;
+        //Convert hours to milliseconds
+        stringstream shour(hour);
+        shour >> i;
+        time += 3600000 * i;
     
-    //Parse and Convert minutes to milliseconds
-    stringstream sminute(minutes);
-    sminute >> i;
-    time += 60000 * i;
+        //Parse and Convert minutes to milliseconds
+        stringstream sminute(minutes);
+        sminute >> i;
+        time += 60000 * i;
     
-    //Parse and Convert seconds to milliseconds
-    stringstream ssecond(seconds);
-    ssecond >> i;
-    time += 1000 * i;
+        //Parse and Convert seconds to milliseconds
+        stringstream ssecond(seconds);
+        ssecond >> i;
+        time += 1000 * i;
     
-    //Parse and Really?
-    stringstream smsecond(milliseconds);
-    smsecond >> i;
+        //Parse and Really?
+        stringstream smsecond(milliseconds);
+        smsecond >> i;
     
-    //Yep
-    time += i;
+        //Yep
+        time += i;
+        
+        tempRacer.setTotalRaceTime(tempRacer.getTotalRaceTime() + time);
+    }
+    
 }
+
+
 
 void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     Racer tempRacer;
@@ -138,24 +145,32 @@ void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
         
         //Parse and Convert sensor number
         charPtr = strtok(NULL, ";");
-        stringstream ssensorNum(charPtr);
-        ssensorNum >> tempSensor[i].number;
+        if(charPtr != NULL){
+            stringstream ssensorNum(charPtr);
+            ssensorNum >> tempSensor[i].number;
         
-        //Parse and Convert mile marker
-        charPtr = strtok(NULL, ";");
-        string tempMileMarker(charPtr);
-        stringstream sMileMarker(charPtr);
-        sMileMarker >> tempSensor[i].mileMarker;
+            //Parse and Convert mile marker
+            charPtr = strtok(NULL, ";");
+            string tempMileMarker(charPtr);
+            stringstream sMileMarker(charPtr);
+            sMileMarker >> tempSensor[i].mileMarker;
         
-        //Grab times
-        charPtr = strtok(NULL, ";");
-        timeArray[i] = charPtr;
-        std::cout << charPtr << std::endl;
+            //Grab times
+            charPtr = strtok(NULL, ";");
+            timeArray[i] = charPtr;
+            std::cout << charPtr << std::endl;
+        }
+        else{
+            tempSensor[i].number = i;
+            tempSensor[i].mileMarker = 0;
+            timeArray[i] = "";
+        }
     }
+    
     for(int j = 0; j < totalSensors; j++ ){
         char tempTimeArray[256] = {0};
         strcpy(tempTimeArray,timeArray[j].c_str());
-        convertTime(tempTimeArray, tempSensor[j].timestamp.time);
+        convertTime(tempRacer, tempTimeArray, tempSensor[j].timestamp.time);
         senseVector.push_back(tempSensor[j]);
     }
     tempRacer.setSensors(senseVector);

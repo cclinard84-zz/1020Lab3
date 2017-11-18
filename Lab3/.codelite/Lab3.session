@@ -1,8 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Session Name="C:\Git\1020Lab3\Lab4\Lab3.workspace">
-  <int Value="0" Name="m_selectedTab"/>
-  <wxString Value="C:\Git\1020Lab3\Lab4\Lab3.workspace" Name="m_workspaceName"/>
-  <TabInfoArray Name="TabInfoArray"/>
+<Session Name="C:\Git\1020Lab3\Lab3\Lab3.workspace">
+  <int Value="4" Name="m_selectedTab"/>
+  <wxString Value="C:\Git\1020Lab3\Lab3\Lab3.workspace" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\main.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\racer.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\sensor.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\timestamp.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\utilities.h" Name="FileName"/>
+      <int Value="144" Name="FirstVisibleLine"/>
+      <int Value="156" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Git\1020Lab3\Lab3\Runners\input.txt" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="7" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+  </TabInfoArray>
   <SerializedObject Name="m_breakpoints">
     <long Value="0" Name="Count"/>
   </SerializedObject>

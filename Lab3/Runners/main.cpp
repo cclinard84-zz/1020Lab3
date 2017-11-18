@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <vector>
+#include <algorithm>
 #include "racer.h"
 #include "utilities.h"
 
@@ -16,6 +17,10 @@ int main(int argc, char **argv)
     
     
     readFile(racers, startTime, totalSensors, raceDistance);
+    for(std::vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it) {
+        std::cout << *it << std::endl;
+    }
+    std::sort(racers.begin(), racers.end());
     for(std::vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it) {
         std::cout << *it << std::endl;
     }
