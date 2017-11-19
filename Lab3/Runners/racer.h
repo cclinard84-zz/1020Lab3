@@ -16,6 +16,11 @@ public:
     Racer();
     Racer(vector<Sensor>, string, int, double, double);
     
+    string stringifiedRaceTime;
+    int racerStartTime;
+    int racerFinishTime;
+    bool possibleCheater = false;
+    
     //Overloaded operator declarations
     friend std::ostream& operator<<( ostream&, const Racer&);
     void operator=( const Racer& );
@@ -45,6 +50,7 @@ private:
     int totalRaceTime; //milliseconds
     double totalRaceDistance;
     double totalRaceSpeed;
+    
 };
 
 //Default constructor
@@ -64,12 +70,13 @@ Racer::Racer(vector<Sensor> sensors, string racerName, int racerNumber, double t
 }
 
 ostream& operator<<(ostream& outStream, const Racer& r){
-    outStream << r.racerName << " " << r.racerNumber << " " << r.totalRaceTime;
+    outStream << r.racerName << " " << r.racerNumber << " " << r.stringifiedRaceTime << std::endl;
     return outStream;
 }
 
 void Racer::operator= ( const Racer& r ) {
     this->racerName = r.racerName;
+    this->stringifiedRaceTime = r.stringifiedRaceTime;
     this->racerNumber = r.racerNumber ;
     this->totalRaceDistance = r.totalRaceDistance;
     this->totalRaceSpeed = r.totalRaceSpeed;

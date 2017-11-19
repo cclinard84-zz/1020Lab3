@@ -6,6 +6,8 @@
 #include <cstring>
 #include <cstdlib>
 #include <sstream>
+#include <cstdio>
+#include <string>
 
 #include "racer.h"
 #include "sensor.h"
@@ -17,6 +19,43 @@ using std::getline;
 using std::string;
 using std::stringstream;
 
+
+void printRacers(vector<Racer>& racers){
+    std::cout << "Name" << "    " << "Number" << "     " << "Time" << endl;
+    std::cout << "----------------------------" << endl;
+     for(std::vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it) {
+        std::cout << *it << std::endl;
+    }
+}
+
+double getMilesPerHour(double raceDistance, int racerTime){
+    return (double)(raceDistance /racerTime) * 1000 * 60 * 60;
+}
+
+void findCheaters(vector<Racer>& racers, double raceDistance){
+    string tempStr = "";
+    double tempMph;
+    for(vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it){
+        tempMph = getMilesPerHour(raceDistance, it->getTotalRaceTime());
+        if(tempMph > 14 || it->possibleCheater == true){
+            
+            tempStr = tempStr.append("*");
+            tempStr.append(it->getRacerName());
+            it->setRacerName(tempStr);
+            tempStr = "";
+        }
+        
+    }
+}
+
+void stringifyRaceTime(Racer& r){
+    //Using this for printing later.
+    int seconds = (int) (r.getTotalRaceTime() / 1000) % 60 ;
+    int minutes = (int) ((r.getTotalRaceTime() / (1000*60)) % 60);
+    int hours   = (int) ((r.getTotalRaceTime() / (1000*60*60)) % 24);
+    int milliseconds = (int) (r.getTotalRaceTime() / 1000) % 1000 ;
+    r.stringifiedRaceTime = std::to_string(hours) + ":" + std::to_string(minutes) + ":" + std::to_string(seconds) + ":" + std::to_string(milliseconds);
+}
 
 void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& raceDistance){
     char * charPtr;
@@ -113,12 +152,9 @@ void convertTime(Racer& tempRacer, char tempArray[], int& time){
         //Yep
         time += i;
         
-        tempRacer.setTotalRaceTime(tempRacer.getTotalRaceTime() + time);
     }
     
 }
-
-
 
 void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     Racer tempRacer;
@@ -130,16 +166,12 @@ void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     
     //Racer name
     charPtr = strtok(tempArray, ";");
-    tempRacer.setRacerName(charPtr);
-    std::cout << tempRacer.getRacerName() << std::endl;
-    
+    tempRacer.setRacerName(charPtr);    
     //Racer number
     charPtr = strtok(NULL, ";");
     stringstream racerNum(charPtr);
     racerNum >> tempNumber;
-    tempRacer.setRacerNumber(tempNumber);
-    std::cout << tempRacer.getRacerNumber() << std::endl;
-    
+    tempRacer.setRacerNumber(tempNumber);    
     //Sensor info
     for(int i = 0; i < totalSensors; i++){
         
@@ -157,29 +189,42 @@ void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
         
             //Grab times
             charPtr = strtok(NULL, ";");
-            timeArray[i] = charPtr;
-            std::cout << charPtr << std::endl;
-        }
-        else{
+            timeArray[i] = charPtr;        }
+        else if(charPtr == NULL && i != totalSensors-1){
             tempSensor[i].number = i;
             tempSensor[i].mileMarker = 0;
             timeArray[i] = "";
+            tempRacer.possibleCheater = true;
         }
     }
     
+    //Add time and sensor information to racer
     for(int j = 0; j < totalSensors; j++ ){
         char tempTimeArray[256] = {0};
         strcpy(tempTimeArray,timeArray[j].c_str());
         convertTime(tempRacer, tempTimeArray, tempSensor[j].timestamp.time);
+        if(j == 0){
+            tempRacer.racerStartTime = tempSensor[j].timestamp.time;
+        }
+        else{
+            if(tempSensor[j].timestamp.time == 1){
+                tempRacer.racerFinishTime = tempSensor[j-1].timestamp.time;
+            }
+            else{
+                tempRacer.racerFinishTime = tempSensor[j].timestamp.time;            
+            }
+        }
         senseVector.push_back(tempSensor[j]);
     }
     tempRacer.setSensors(senseVector);
+    tempRacer.setTotalRaceTime(tempRacer.racerFinishTime - tempRacer.racerStartTime);
+    stringifyRaceTime(tempRacer);
     data.push_back(tempRacer);
 }
 
 void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& raceDistance){
     
-    //Boolean to test if race information has been gotten
+    //Boolean to test if race information has been retrieved
     bool firstLine = false;
     
     ifstream input("input.txt");
