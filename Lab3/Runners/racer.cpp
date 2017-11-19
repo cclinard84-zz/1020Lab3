@@ -1,17 +1,4 @@
-#ifndef UTILITIES_H
-#define UTILITIES_H
-
-#include <fstream>
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <sstream>
-#include <cstdio>
-#include <string>
-
 #include "racer.h"
-#include "sensor.h"
-#include "timestamp.h"
 
 using std::vector;
 using std::ifstream;
@@ -19,10 +6,70 @@ using std::getline;
 using std::string;
 using std::stringstream;
 
+//Default constructor
+Racer::Racer(){
+    this->racerName = "default";
+    this->totalRaceDistance = 1.0;
+    this->totalRaceSpeed = 1.0;
+    this->racerNumber = -1;
+}
+
+//Overloaded constructor
+Racer::Racer(vector<Sensor> sensors, string racerName, int racerNumber, double totalDistance, double totalSpeed){
+    this->sensors = sensors;
+    this->racerNumber = racerNumber;
+    this->totalRaceDistance = totalDistance;
+    this->totalRaceSpeed = totalSpeed;
+}
+
+ostream& operator<<(ostream& outStream, const Racer& r){
+    outStream << r.racerName << " " << r.racerNumber << " " << r.stringifiedRaceTime << std::endl;
+    return outStream;
+}
+
+void Racer::operator= ( const Racer& r ) {
+    this->racerName = r.racerName;
+    this->stringifiedRaceTime = r.stringifiedRaceTime;
+    this->racerNumber = r.racerNumber ;
+    this->totalRaceDistance = r.totalRaceDistance;
+    this->totalRaceSpeed = r.totalRaceSpeed;
+    this->totalRaceTime = r.totalRaceTime;
+    this->sensors = r.sensors;
+}
+
+void welcome(){
+    std::cout << "Welcome to Cheat Finder 9000!\n" << std::endl;
+    std::cout << "Just supply the name of a text file and I will do the rest!\n" << endl;
+    std::cout << "An asterisk beside the name of the racer denotes possible cheating (skipped sensors or speed > 14 mph).\n" << endl;
+}
+
+void openFile( ifstream &input, string &inputFile ){
+	std::cout << "Please enter the file name: ";
+	std::cin >> inputFile;
+	input.open(inputFile.c_str( ));
+    std::cout << std::endl;
+}
+
+void checkFileFail( ifstream &input, string inputFile){
+	
+	char c;
+
+	if (input.fail( )){
+		std::cout << "The file " << inputFile << " does not exist.\n";
+		exit(1);
+	}
+        input.get(c);
+        if (input.eof( )){
+                std::cout << "The file " << inputFile << " is empty.\n";
+                exit(1);
+        }
+       	input.putback(c);
+	return;
+}
 
 void printRacers(vector<Racer>& racers){
     std::cout << "Name" << "    " << "Number" << "     " << "Time" << endl;
-    std::cout << "----------------------------" << endl;
+    std::cout << "-------------------------------" << endl;
      for(std::vector<Racer>::iterator it = racers.begin(); it != racers.end(); ++it) {
         std::cout << *it << std::endl;
     }
@@ -222,12 +269,11 @@ void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     data.push_back(tempRacer);
 }
 
-void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& raceDistance){
+void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& raceDistance, ifstream& input){
     
     //Boolean to test if race information has been retrieved
     bool firstLine = false;
     
-    ifstream input("input.txt");
     string line;
     getline( input, line );
     while ( true ) {
@@ -251,9 +297,3 @@ void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& ra
     }
     input.close();
 }
-
-
-
-
-
-#endif

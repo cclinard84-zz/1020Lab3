@@ -98,6 +98,6 @@
     <File Name="racer.h"/>
     <File Name="timestamp.h"/>
     <File Name="input.txt"/>
-    <File Name="utilities.h"/>
+    <File Name="racer.cpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

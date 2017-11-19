@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Admin
-Date                   :=18/11/2017
+Date                   :=19/11/2017
 CodeLitePath           :="C:/Program Files/CodeLite"
 LinkerName             :=C:/MinGW/bin/g++.exe
 SharedObjectLinkerName :=C:/MinGW/bin/g++.exe -shared -fPIC
@@ -62,7 +62,7 @@ AS       := C:/MinGW/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=C:\Program Files\CodeLite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/racer.cpp$(ObjectSuffix) 
 
 
 
@@ -100,6 +100,14 @@ $(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
 
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
+
+$(IntermediateDirectory)/racer.cpp$(ObjectSuffix): racer.cpp $(IntermediateDirectory)/racer.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Git/1020Lab3/Lab3/Runners/racer.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/racer.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/racer.cpp$(DependSuffix): racer.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/racer.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/racer.cpp$(DependSuffix) -MM racer.cpp
+
+$(IntermediateDirectory)/racer.cpp$(PreprocessSuffix): racer.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/racer.cpp$(PreprocessSuffix) racer.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

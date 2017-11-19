@@ -1,7 +1,12 @@
-#ifndef racer_h
-#define racer_h
-#include <cstdlib>
+#ifndef RACER_H
+#define RACER_H
+
+#include <fstream>
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <sstream>
+#include <cstdio>
 #include <vector>
 #include <string>
 #include "sensor.h"
@@ -52,35 +57,17 @@ private:
     double totalRaceSpeed;
     
 };
+void welcome();
+void openFile(std::ifstream&, string&);
+void checkFileFail(std::ifstream&, string);
+void printRacers(vector<Racer>& );
+double getMilesPerHour(double , int );
+void findCheaters(vector<Racer>& , double );
+void stringifyRaceTime(Racer& );
+void getRaceInfo(char[] , int& , int& , double& );
+void convertTime(Racer& , char[], int& );
+void getRacerData(vector<Racer>& , char[], int );
+void readFile(vector<Racer>& , int& , int& , double&, std::ifstream&);
 
-//Default constructor
-Racer::Racer(){
-    this->racerName = "default";
-    this->totalRaceDistance = 1.0;
-    this->totalRaceSpeed = 1.0;
-    this->racerNumber = -1;
-}
 
-//Overloaded constructor
-Racer::Racer(vector<Sensor> sensors, string racerName, int racerNumber, double totalDistance, double totalSpeed){
-    this->sensors = sensors;
-    this->racerNumber = racerNumber;
-    this->totalRaceDistance = totalDistance;
-    this->totalRaceSpeed = totalSpeed;
-}
-
-ostream& operator<<(ostream& outStream, const Racer& r){
-    outStream << r.racerName << " " << r.racerNumber << " " << r.stringifiedRaceTime << std::endl;
-    return outStream;
-}
-
-void Racer::operator= ( const Racer& r ) {
-    this->racerName = r.racerName;
-    this->stringifiedRaceTime = r.stringifiedRaceTime;
-    this->racerNumber = r.racerNumber ;
-    this->totalRaceDistance = r.totalRaceDistance;
-    this->totalRaceSpeed = r.totalRaceSpeed;
-    this->totalRaceTime = r.totalRaceTime;
-    this->sensors = r.sensors;
-}
 #endif
