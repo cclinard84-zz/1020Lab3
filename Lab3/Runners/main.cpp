@@ -1,3 +1,10 @@
+/*  File: main.cpp
+ *  Author: Matt Clinard
+ *  Date: 11/19/17
+ *  Description: This program takes in a semicolon seperated file of race and racer data
+ *               parses it down to objects and determines if the racer possibly cheated.
+ */
+ 
 #include <stdio.h>
 #include <vector>
 #include <fstream>

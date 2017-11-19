@@ -1,3 +1,8 @@
+/*  File: racer.h
+ *  Author: Matt Clinard
+ *  Date: 11/19/17
+ *  Description: this file is used with lab3 - Runners lab
+ */
 #ifndef RACER_H
 #define RACER_H
 

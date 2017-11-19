@@ -1,4 +1,9 @@
-#include "racer.h"
+/*  File: racer.cpp
+ *  Author: Matt Clinard
+ *  Date: 11/19/17
+ *  Description: this file is used with lab3 - Runners lab
+ */
+ #include "racer.h"
 
 using std::vector;
 using std::ifstream;
@@ -22,11 +27,13 @@ Racer::Racer(vector<Sensor> sensors, string racerName, int racerNumber, double t
     this->totalRaceSpeed = totalSpeed;
 }
 
+//Overloaded operator<< for the racer class
 ostream& operator<<(ostream& outStream, const Racer& r){
     outStream << r.racerName << " " << r.racerNumber << " " << r.stringifiedRaceTime << std::endl;
     return outStream;
 }
 
+//Overloaded operator= for the racer class
 void Racer::operator= ( const Racer& r ) {
     this->racerName = r.racerName;
     this->stringifiedRaceTime = r.stringifiedRaceTime;
@@ -37,12 +44,21 @@ void Racer::operator= ( const Racer& r ) {
     this->sensors = r.sensors;
 }
 
+/* welcome: This function welcomes the user and gives a brief description of the program.
+*  Parameters: none
+*  Returns: nothing
+*/
 void welcome(){
     std::cout << "Welcome to Cheat Finder 9000!\n" << std::endl;
     std::cout << "Just supply the name of a text file and I will do the rest!\n" << endl;
     std::cout << "An asterisk beside the name of the racer denotes possible cheating (skipped sensors or speed > 14 mph).\n" << endl;
 }
 
+/* openFile: This function asks the user for the inputFile name and opens the ifstream
+*  Parameters: input - ifstream variable name
+* 			   inputFile - string that the user enters
+*  Returns: nothing
+*/
 void openFile( ifstream &input, string &inputFile ){
 	std::cout << "Please enter the file name: ";
 	std::cin >> inputFile;
@@ -50,6 +66,11 @@ void openFile( ifstream &input, string &inputFile ){
     std::cout << std::endl;
 }
 
+/* checkFileFail: This function checks to make sure the file does exist and is not empty.
+*  Parameters: input - ifstream variable name
+* 			   inputFile - string that the user enters
+*  Returns: Nothing
+*/
 void checkFileFail( ifstream &input, string inputFile){
 	
 	char c;
@@ -67,6 +88,10 @@ void checkFileFail( ifstream &input, string inputFile){
 	return;
 }
 
+/* printRacers: This function prints the racers based on the overloaded output operator.
+*  Parameters: racers - a vector of Racer objects
+*  Returns: Nothing
+*/
 void printRacers(vector<Racer>& racers){
     std::cout << "Name" << "    " << "Number" << "     " << "Time" << endl;
     std::cout << "-------------------------------" << endl;
@@ -75,10 +100,20 @@ void printRacers(vector<Racer>& racers){
     }
 }
 
+/* getMilesPerHour: This function calculates the miles per hour of a racer.
+*  Parameters: raceDistance - total distance of the race
+*              racerTime - total time it took the racer to run the race
+*  Returns: a double that is roughly the speed of the racer in MPH
+*/
 double getMilesPerHour(double raceDistance, int racerTime){
     return (double)(raceDistance /racerTime) * 1000 * 60 * 60;
 }
 
+/* findCheaters: This function determines if a racer could have possibly cheated.
+*  Parameters: raceers - a vector of racer objects
+*              raceDistance - total distance of the race
+*  Returns: nothing
+*/
 void findCheaters(vector<Racer>& racers, double raceDistance){
     string tempStr = "";
     double tempMph;
@@ -95,6 +130,10 @@ void findCheaters(vector<Racer>& racers, double raceDistance){
     }
 }
 
+/* stringifyRaceTime: This function turns the time into a string.
+*  Parameters: r - a racer object
+*  Returns: nothing
+*/
 void stringifyRaceTime(Racer& r){
     //Using this for printing later.
     int seconds = (int) (r.getTotalRaceTime() / 1000) % 60 ;
@@ -104,6 +143,13 @@ void stringifyRaceTime(Racer& r){
     r.stringifiedRaceTime = std::to_string(hours) + ":" + std::to_string(minutes) + ":" + std::to_string(seconds) + ":" + std::to_string(milliseconds);
 }
 
+/* getRaceInfo: This function takes the first read of the file as the race information.
+*  Parameters: tempArray - a tempArray with all of the first read info
+*              startTime - start time of the race
+*              totalSensors - total number of sensors in the race
+*              raceDistance - total distance of the race in miles
+*  Returns: nothing
+*/
 void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& raceDistance){
     char * charPtr;
     int i;
@@ -159,6 +205,12 @@ void getRaceInfo(char tempArray[], int& startTime, int& totalSensors, double& ra
     
 }
 
+/* convertTime: This function converts the time from hours minutes seconds and milliseconds to milliseconds.
+*  Parameters: tempArray - a tempArray with all of the first read info
+*              tempRacer - temporary racer object
+*              time - total time in milliseconds
+*  Returns: nothing
+*/
 void convertTime(Racer& tempRacer, char tempArray[], int& time){
     char * charPtr;
     int i;
@@ -203,6 +255,13 @@ void convertTime(Racer& tempRacer, char tempArray[], int& time){
     
 }
 
+/* convertTime: This function takes information from a file read, parses it, then puts the information into a racer object
+ *              which is then pushed into a vector.
+*  Parameters: tempArray - a tempArray with file read information
+*              data - a vector of racer objects
+*              totalSensors - Number of sensors used in the race
+*  Returns: nothing
+*/
 void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     Racer tempRacer;
     Sensor tempSensor[totalSensors];
@@ -269,6 +328,16 @@ void getRacerData(vector<Racer>& data, char tempArray[], int totalSensors){
     data.push_back(tempRacer);
 }
 
+/* readFile: Reads the file and puts each job object into an array of structures
+*  Parameters: data - an vector of Racer objects
+*              startTime - time the race started
+*              totalSensors - total number of sensors in the race
+*              raceDistance - raceDistance in miles
+*              input - ifstream variable name
+*	 Precondition: File exists, is valid, and has opened successfully
+*	 Postcondition: array of job structures filled to i
+*	 Returns: number of job structures created
+*/
 void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& raceDistance, ifstream& input){
     
     //Boolean to test if race information has been retrieved
@@ -279,6 +348,8 @@ void readFile(vector<Racer>& data, int& startTime, int& totalSensors, double& ra
     while ( true ) {
         char tempArray[256] = {0};
         strcpy(tempArray, line.c_str());
+        
+        //if first read go here because the first line is race information
         if(firstLine == false){
             getRaceInfo(tempArray, startTime, totalSensors, raceDistance);
             firstLine = true;
